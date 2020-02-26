@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>为什么分布式一定要有Redis? | 一叶秋枫</title><meta name="description" content="为什么分布式一定要有Redis。"><meta name="keywords" content="高并发,分布式"><meta name="author" content="一叶秋枫"><meta name="copyright" content="一叶秋枫"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://hm.baidu.com"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="为什么分布式一定要有Redis?"><meta name="twitter:description" content="为什么分布式一定要有Redis。"><meta name="twitter:image" content="https://s2.ax1x.com/2020/02/26/3NDS39.png"><meta property="og:type" content="article"><meta property="og:title" content="为什么分布式一定要有Redis?"><meta property="og:url" content="https://hwy.ac.cn/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/"><meta property="og:site_name" content="一叶秋枫"><meta property="og:description" content="为什么分布式一定要有Redis。"><meta property="og:image" content="https://s2.ax1x.com/2020/02/26/3NDS39.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="https://hwy.ac.cn/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/"><link rel="prev" title="干货｜秒杀架构设计的关键技术" href="https://hwy.ac.cn/2018/07/11/%E5%B9%B2%E8%B4%A7%EF%BD%9C%E7%A7%92%E6%9D%80%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF/"><link rel="next" title="Spring Boot 集成 Lombok 让代码更简洁!" href="https://hwy.ac.cn/2018/06/05/Spring%20Boot%20%E9%9B%86%E6%88%90%20Lombok%20%E8%AE%A9%E4%BB%A3%E7%A0%81%E6%9B%B4%E7%AE%80%E6%B4%81!/"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?91b2d9755d63bbc10c5c757667aa0fcf";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://hwy.ac.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">一叶秋枫</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">57</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">36</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">16</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#maxmemory-policy-volatile-lru"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">maxmemory-policy volatile-lru</span></a></li></ol></div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#maxmemory-policy-volatile-lru"><span class="toc-number">1.</span> <span class="toc-text">maxmemory-policy volatile-lru</span></a></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://s2.ax1x.com/2020/02/26/3NDS39.png)"><div id="post-info"><div id="post-title"><div class="posttitle">为什么分布式一定要有Redis?</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2018-07-09<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2020-02-26</time><span class="post-meta__separator">|</span><span><i class="fa fa-inbox post-meta__icon fa-fw" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon fa-fw" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">4.2k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon fa-fw" aria-hidden="true"></i><span>阅读时长: 12 分钟</span><div class="post-meta-pv-cv"><span class="post-meta__separator">|</span><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span><span class="post-meta__separator">|</span><i class="fa fa-comments-o post-meta__icon fa-fw" aria-hidden="true"></i><span>评论数:</span><a href="/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count comment-count" data-xid="/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/" itemprop="commentCount"></span></a></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><html><head></head><body><p>考虑到绝大部分写业务的程序员，在实际开发中使用 Redis 的时候，只会 Set Value 和 Get Value 两个操作，对 Redis 整体缺乏一个认知。</p>
+<a id="more"></a>
+<p>为什么分布式一定要有Redis?<br>“<br>考虑到绝大部分写业务的程序员，在实际开发中使用 Redis 的时候，只会 Set Value 和 Get Value 两个操作，对 Redis 整体缺乏一个认知。</p>
+<p>所以我斗胆以 Redis 为题材，对 Redis 常见问题做一个总结，希望能够弥补大家的知识盲点。</p>
+<p>本文围绕以下几点进行阐述：</p>
+<p>为什么使用 Redis</p>
+<p>使用 Redis 有什么缺点</p>
+<p>单线程的 Redis 为什么这么快</p>
+<p>Redis 的数据类型，以及每种数据类型的使用场景</p>
+<p>Redis 的过期策略以及内存淘汰机制</p>
+<p>Redis 和数据库双写一致性问题</p>
+<p>如何应对缓存穿透和缓存雪崩问题</p>
+<p>如何解决 Redis 的并发竞争 Key 问题</p>
+<p>为什么使用 Redis</p>
+<p>我觉得在项目中使用 Redis，主要是从两个角度去考虑：性能和并发。</p>
+<p>当然，Redis 还具备可以做分布式锁等其他功能，但是如果只是为了分布式锁这些其他功能，完全还有其他中间件，如 ZooKpeer 等代替，并不是非要使用 Redis。因此，这个问题主要从性能和并发两个角度去答。</p>
+<p>性能</p>
+<p>如下图所示，我们在碰到需要执行耗时特别久，且结果不频繁变动的 SQL，就特别适合将运行结果放入缓存。这样，后面的请求就去缓存中读取，使得请求能够迅速响应。</p>
+<p>题外话：忽然想聊一下这个迅速响应的标准。根据交互效果的不同，这个响应时间没有固定标准。</p>
+<p>不过曾经有人这么告诉我：”在理想状态下，我们的页面跳转需要在瞬间解决，对于页内操作则需要在刹那间解决。</p>
+<p>另外，超过一弹指的耗时操作要有进度提示，并且可以随时中止或取消，这样才能给用户最好的体验。”</p>
+<p>那么瞬间、刹那、一弹指具体是多少时间呢？</p>
+<p>根据《摩诃僧祗律》记载：</p>
+<p>一刹那者为一念，二十念为一瞬，二十瞬为一弹指，二十弹指为一罗预，二十罗预为一须臾，一日一夜有三十须臾。</p>
+<p>那么，经过周密的计算，一瞬间为 0.36 秒、一刹那有 0.018 秒、一弹指长达 7.2 秒。</p>
+<p>并发</p>
+<p>如下图所示，在大并发的情况下，所有的请求直接访问数据库，数据库会出现连接异常。</p>
+<p>这个时候，就需要使用 Redis 做一个缓冲操作，让请求先访问到 Redis，而不是直接访问数据库。</p>
+<p>使用 Redis 有什么缺点</p>
+<p>大家用 Redis 这么久，这个问题是必须要了解的，基本上使用 Redis 都会碰到一些问题，常见的也就几个。</p>
+<p>回答主要是四个问题：</p>
+<p>缓存和数据库双写一致性问题</p>
+<p>缓存雪崩问题</p>
+<p>缓存击穿问题</p>
+<p>缓存的并发竞争问题</p>
+<p>这四个问题，我个人觉得在项目中是常遇见的，具体解决方案，后文给出。</p>
+<p>单线程的 Redis 为什么这么快</p>
+<p>这个问题是对 Redis 内部机制的一个考察。根据我的面试经验，很多人都不知道 Redis 是单线程工作模型。所以，这个问题还是应该要复习一下的。</p>
+<p>回答主要是以下三点：</p>
+<p>纯内存操作</p>
+<p>单线程操作，避免了频繁的上下文切换</p>
+<p>采用了非阻塞 I/O 多路复用机制</p>
+<p>题外话：我们现在要仔细的说一说 I/O 多路复用机制，因为这个说法实在是太通俗了，通俗到一般人都不懂是什么意思。</p>
+<p>打一个比方：小曲在 S 城开了一家快递店，负责同城快送服务。小曲因为资金限制，雇佣了一批快递员，然后小曲发现资金不够了，只够买一辆车送快递。</p>
+<p>经营方式一</p>
+<p>客户每送来一份快递，小曲就让一个快递员盯着，然后快递员开车去送快递。</p>
+<p>慢慢的小曲就发现了这种经营方式存在下述问题：</p>
+<p>几十个快递员基本上时间都花在了抢车上了，大部分快递员都处在闲置状态，谁抢到了车，谁就能去送快递。</p>
+<p>随着快递的增多，快递员也越来越多，小曲发现快递店里越来越挤，没办法雇佣新的快递员了。</p>
+<p>快递员之间的协调很花时间。</p>
+<p>综合上述缺点，小曲痛定思痛，提出了下面的经营方式。</p>
+<p>经营方式二</p>
+<p>小曲只雇佣一个快递员。然后呢，客户送来的快递，小曲按送达地点标注好，然后依次放在一个地方。</p>
+<p>最后，那个快递员依次的去取快递，一次拿一个，然后开着车去送快递，送好了就回来拿下一个快递。</p>
+<p>上述两种经营方式对比，是不是明显觉得第二种，效率更高，更好呢？</p>
+<p>在上述比喻中：</p>
+<p>每个快递员→每个线程</p>
+<p>每个快递→每个 Socket(I/O 流)</p>
+<p>快递的送达地点→Socket 的不同状态</p>
+<p>客户送快递请求→来自客户端的请求</p>
+<p>小曲的经营方式→服务端运行的代码</p>
+<p>一辆车→CPU 的核数</p>
+<p>于是我们有如下结论：</p>
+<p>经营方式一就是传统的并发模型，每个 I/O 流(快递)都有一个新的线程(快递员)管理。</p>
+<p>经营方式二就是 I/O 多路复用。只有单个线程(一个快递员)，通过跟踪每个 I/O 流的状态(每个快递的送达地点)，来管理多个 I/O 流。</p>
+<p>下面类比到真实的 Redis 线程模型，如图所示：</p>
+<p>简单来说，就是我们的 redis-client 在操作的时候，会产生具有不同事件类型的 Socket。</p>
+<p>在服务端，有一段 I/O 多路复用程序，将其置入队列之中。然后，文件事件分派器，依次去队列中取，转发到不同的事件处理器中。</p>
+<p>需要说明的是，这个 I/O 多路复用机制，Redis 还提供了 select、epoll、evport、kqueue 等多路复用函数库，大家可以自行去了解。</p>
+<p>Redis 的数据类型，以及每种数据类型的使用场景</p>
+<p>是不是觉得这个问题很基础？我也这么觉得。然而根据面试经验发现，至少百分之八十的人答不上这个问题。</p>
+<p>建议，在项目中用到后，再类比记忆，体会更深，不要硬记。基本上，一个合格的程序员，五种类型都会用到。</p>
+<p>String</p>
+<p>这个没啥好说的，最常规的 set/get 操作，Value 可以是 String 也可以是数字。一般做一些复杂的计数功能的缓存。</p>
+<p>Hash</p>
+<p>这里 Value 存放的是结构化的对象，比较方便的就是操作其中的某个字段。</p>
+<p>我在做单点登录的时候，就是用这种数据结构存储用户信息，以 CookieId 作为 Key，设置 30 分钟为缓存过期时间，能很好的模拟出类似 Session 的效果。</p>
+<p>List</p>
+<p>使用 List 的数据结构，可以做简单的消息队列的功能。另外还有一个就是，可以利用 lrange 命令，做基于 Redis 的分页功能，性能极佳，用户体验好。</p>
+<p>Set</p>
+<p>因为 Set 堆放的是一堆不重复值的集合。所以可以做全局去重的功能。为什么不用 JVM 自带的 Set 进行去重？</p>
+<p>因为我们的系统一般都是集群部署，使用 JVM 自带的 Set，比较麻烦，难道为了一个做一个全局去重，再起一个公共服务，太麻烦了。</p>
+<p>另外，就是利用交集、并集、差集等操作，可以计算共同喜好，全部的喜好，自己独有的喜好等功能。</p>
+<p>Sorted Set</p>
+<p>Sorted Set多了一个权重参数 Score，集合中的元素能够按 Score 进行排列。</p>
+<p>可以做排行榜应用，取 TOP N 操作。Sorted Set 可以用来做延时任务。最后一个应用就是可以做范围查找。</p>
+<p>Redis 的过期策略以及内存淘汰机制</p>
+<p>这个问题相当重要，到底 Redis 有没用到家，这个问题就可以看出来。</p>
+<p>比如你 Redis 只能存 5G 数据，可是你写了 10G，那会删 5G 的数据。怎么删的，这个问题思考过么？</p>
+<p>还有，你的数据已经设置了过期时间，但是时间到了，内存占用率还是比较高，有思考过原因么?</p>
+<p>回答：Redis 采用的是定期删除+惰性删除策略。</p>
+<p>为什么不用定时删除策略</p>
+<p>定时删除，用一个定时器来负责监视 Key，过期则自动删除。虽然内存及时释放，但是十分消耗 CPU 资源。</p>
+<p>在大并发请求下，CPU 要将时间应用在处理请求，而不是删除 Key，因此没有采用这一策略。</p>
+<p>定期删除+惰性删除是如何工作</p>
+<p>定期删除，Redis 默认每个 100ms 检查，是否有过期的 Key，有过期 Key 则删除。</p>
+<p>需要说明的是，Redis 不是每个 100ms 将所有的 Key 检查一次，而是随机抽取进行检查(如果每隔 100ms，全部 Key 进行检查，Redis 岂不是卡死)。</p>
+<p>因此，如果只采用定期删除策略，会导致很多 Key 到时间没有删除。于是，惰性删除派上用场。</p>
+<p>也就是说在你获取某个 Key 的时候，Redis 会检查一下，这个 Key 如果设置了过期时间，那么是否过期了？如果过期了此时就会删除。</p>
+<p>采用定期删除+惰性删除就没其他问题了么?</p>
+<p>不是的，如果定期删除没删除 Key。然后你也没即时去请求 Key，也就是说惰性删除也没生效。这样，Redis的内存会越来越高。那么就应该采用内存淘汰机制。</p>
+<p>在 redis.conf 中有一行配置：</p>
+<h1 id="maxmemory-policy-volatile-lru"><a href="#maxmemory-policy-volatile-lru" class="headerlink" title="maxmemory-policy volatile-lru"></a>maxmemory-policy volatile-lru</h1><p>该配置就是配内存淘汰策略的(什么，你没配过？好好反省一下自己)：</p>
+<p>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。应该没人用吧。</p>
+<p>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 Key。推荐使用，目前项目在用这种。</p>
+<p>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个 Key。应该也没人用吧，你不删最少使用 Key，去随机删。</p>
+<p>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的 Key。这种情况一般是把 Redis 既当缓存，又做持久化存储的时候才用。不推荐。</p>
+<p>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个 Key。依然不推荐。</p>
+<p>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的 Key 优先移除。不推荐。</p>
+<p>PS：如果没有设置 expire 的 Key，不满足先决条件(prerequisites)；那么 volatile-lru，volatile-random 和 volatile-ttl 策略的行为，和 noeviction(不删除) 基本上一致。</p>
+<p>Redis 和数据库双写一致性问题</p>
+<p>一致性问题是分布式常见问题，还可以再分为最终一致性和强一致性。数据库和缓存双写，就必然会存在不一致的问题。</p>
+<p>答这个问题，先明白一个前提。就是如果对数据有强一致性要求，不能放缓存。我们所做的一切，只能保证最终一致性。</p>
+<p>另外，我们所做的方案从根本上来说，只能说降低不一致发生的概率，无法完全避免。因此，有强一致性要求的数据，不能放缓存。</p>
+<p>回答：首先，采取正确更新策略，先更新数据库，再删缓存。其次，因为可能存在删除缓存失败的问题，提供一个补偿措施即可，例如利用消息队列。</p>
+<p>如何应对缓存穿透和缓存雪崩问题</p>
+<p>这两个问题，说句实在话，一般中小型传统软件企业，很难碰到这个问题。如果有大并发的项目，流量有几百万左右。这两个问题一定要深刻考虑。</p>
+<p>缓存穿透，即黑客故意去请求缓存中不存在的数据，导致所有的请求都怼到数据库上，从而数据库连接异常。</p>
+<p>缓存穿透解决方案：</p>
+<p>利用互斥锁，缓存失效的时候，先去获得锁，得到锁了，再去请求数据库。没得到锁，则休眠一段时间重试。</p>
+<p>采用异步更新策略，无论 Key 是否取到值，都直接返回。Value 值中维护一个缓存失效时间，缓存如果过期，异步起一个线程去读数据库，更新缓存。需要做缓存预热(项目启动前，先加载缓存)操作。</p>
+<p>提供一个能迅速判断请求是否有效的拦截机制，比如，利用布隆过滤器，内部维护一系列合法有效的 Key。迅速判断出，请求所携带的 Key 是否合法有效。如果不合法，则直接返回。</p>
+<p>缓存雪崩，即缓存同一时间大面积的失效，这个时候又来了一波请求，结果请求都怼到数据库上，从而导致数据库连接异常。</p>
+<p>缓存雪崩解决方案：</p>
+<p>给缓存的失效时间，加上一个随机值，避免集体失效。</p>
+<p>使用互斥锁，但是该方案吞吐量明显下降了。</p>
+<p>双缓存。我们有两个缓存，缓存 A 和缓存 B。缓存 A 的失效时间为 20 分钟，缓存 B 不设失效时间。自己做缓存预热操作。</p>
+<p>然后细分以下几个小点：从缓存 A 读数据库，有则直接返回；A 没有数据，直接从 B 读数据，直接返回，并且异步启动一个更新线程，更新线程同时更新缓存 A 和缓存 B。</p>
+<p>如何解决 Redis 的并发竞争 Key 问题</p>
+<p>这个问题大致就是，同时有多个子系统去 Set 一个 Key。这个时候大家思考过要注意什么呢？</p>
+<p>需要说明一下，我提前百度了一下，发现答案基本都是推荐用 Redis 事务机制。</p>
+<p>我并不推荐使用 Redis 的事务机制。因为我们的生产环境，基本都是 Redis 集群环境，做了数据分片操作。</p>
+<p>你一个事务中有涉及到多个 Key 操作的时候，这多个 Key 不一定都存储在同一个 redis-server 上。因此，Redis 的事务机制，十分鸡肋。</p>
+<p>如果对这个 Key 操作，不要求顺序</p>
+<p>这种情况下，准备一个分布式锁，大家去抢锁，抢到锁就做 set 操作即可，比较简单。</p>
+<p>如果对这个 Key 操作，要求顺序</p>
+<p>假设有一个 key1，系统 A 需要将 key1 设置为 valueA，系统 B 需要将 key1 设置为 valueB，系统 C 需要将 key1 设置为 valueC。</p>
+<p>期望按照 key1 的 value 值按照 valueA > valueB > valueC 的顺序变化。这种时候我们在数据写入数据库的时候，需要保存一个时间戳。</p>
+<p>假设时间戳如下：</p>
+<p>系统A key 1 {valueA  3:00}<br>系统B key 1 {valueB  3:05}<br>系统C key 1 {valueC  3:10}</p>
+<p>那么，假设这会系统 B 先抢到锁，将 key1 设置为{valueB 3:05}。接下来系统 A 抢到锁，发现自己的 valueA 的时间戳早于缓存中的时间戳，那就不做 set 操作了，以此类推。</p>
+<p>其他方法，比如利用队列，将 set 方法变成串行访问也可以。总之，灵活变通。</p>
+<p>总结</p>
+<p>本文对 Redis 的常见问题做了一个总结。大部分是自己在工作中遇到，以及之前面试别人的时候，爱问的一些问题。</p>
+<p>另外，不推荐大家临时抱佛脚，真正碰到一些有经验的工程师，其实几下就能把你问懵。最后，希望大家有所收获吧。</p>
+</body></html></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">一叶秋枫</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://hwy.ac.cn/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/">https://hwy.ac.cn/2018/07/09/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E5%AE%9A%E8%A6%81%E6%9C%89Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://hwy.ac.cn">一叶秋枫</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/">高并发    </a><a class="post-meta__tags" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式    </a></div><div class="post_share"><div class="social-share" data-image="https://s2.ax1x.com/2020/02/26/3NDS39.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button button--primary button--animated"> <i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.png" alt="微信"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.png" alt="支付寶"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2018/07/11/%E5%B9%B2%E8%B4%A7%EF%BD%9C%E7%A7%92%E6%9D%80%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF/"><img class="prev_cover lazyload" data-src="https://s2.ax1x.com/2020/02/26/3NDQDP.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>干货｜秒杀架构设计的关键技术</span></div></a></div><div class="next-post pull_right"><a href="/2018/06/05/Spring%20Boot%20%E9%9B%86%E6%88%90%20Lombok%20%E8%AE%A9%E4%BB%A3%E7%A0%81%E6%9B%B4%E7%AE%80%E6%B4%81!/"><img class="next_cover lazyload" data-src="https://s2.ax1x.com/2020/02/26/3NDV4e.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Spring Boot 集成 Lombok 让代码更简洁!</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2018/09/06/基于hystrix为spring-boot+dubbo+zookeeper提供熔断机制/" title="基于hystrix为spring-boot+dubbo+zookeeper提供熔断机制"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDlHf.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2018-09-06</div><div class="relatedPosts_title">基于hystrix为spring-boot+dubbo+zookeeper提供熔断机制</div></div></a></div><div class="relatedPosts_item"><a href="/2018/08/24/Java内存模型和Java并发/" title="Java内存模型和Java并发"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDPnx.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2018-08-24</div><div class="relatedPosts_title">Java内存模型和Java并发</div></div></a></div><div class="relatedPosts_item"><a href="/2018/07/11/干货｜秒杀架构设计的关键技术/" title="干货｜秒杀架构设计的关键技术"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDQDP.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2018-07-11</div><div class="relatedPosts_title">干货｜秒杀架构设计的关键技术</div></div></a></div><div class="relatedPosts_item"><a href="/2018/06/01/想要做到高并发和高性能，请先真正的理解它们，以及跟CPU，内存，分布式又有什么关系呢/" title="想要做到高并发和高性能，请先真正的理解它们，以及跟CPU，内存，分布式又有什么关系呢?"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDlHf.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2018-06-01</div><div class="relatedPosts_title">想要做到高并发和高性能，请先真正的理解它们，以及跟CPU，内存，分布式又有什么关系呢?</div></div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var notify = false == true ? true : false;
+var verify = false == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'z5BfPsXWcymDudP8Nc99LtRc-gzGzoHsz',
+  appKey:'6jqeO18XzzYHJCR0n4hYYq6z',
+  placeholder:'来都来了，不留下个脚印吗',
+  avatar:'monsterid',
+  guest_info:guest_info,
+  pageSize:'10',
+  lang:'zh-cn',
+  recordIP: true
+});</script></div></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By 一叶秋枫</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span>粤ICP备17059405号-1</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script id="ribbon" src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/click_heart.js"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
