@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"><title>微信扫码登录是如何实现的？ | 一叶秋枫</title><meta name="description" content="微信扫码登录是如何实现的？"><meta name="keywords" content="其他,微信"><meta name="author" content="一叶秋枫"><meta name="copyright" content="一叶秋枫"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://hm.baidu.com"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="//busuanzi.ibruce.info"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="微信扫码登录是如何实现的？"><meta name="twitter:description" content="微信扫码登录是如何实现的？"><meta name="twitter:image" content="https://s2.ax1x.com/2020/02/26/3NDQDP.png"><meta property="og:type" content="article"><meta property="og:title" content="微信扫码登录是如何实现的？"><meta property="og:url" content="https://hwy.ac.cn/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/"><meta property="og:site_name" content="一叶秋枫"><meta property="og:description" content="微信扫码登录是如何实现的？"><meta property="og:image" content="https://s2.ax1x.com/2020/02/26/3NDQDP.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="https://hwy.ac.cn/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/"><link rel="prev" title="十八个让你终生受用的时间管理技巧" href="https://hwy.ac.cn/2018/11/09/%E5%8D%81%E5%85%AB%E4%B8%AA%E8%AE%A9%E4%BD%A0%E7%BB%88%E7%94%9F%E5%8F%97%E7%94%A8%E7%9A%84%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86%E6%8A%80%E5%B7%A7%20/"><link rel="next" title="基于spring boot的简单定时任务" href="https://hwy.ac.cn/2018/11/05/%E5%9F%BA%E4%BA%8Espring%20boot%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?91b2d9755d63bbc10c5c757667aa0fcf";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://hwy.ac.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  isHome: false,
+  isPost: true
+  
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><header> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">一叶秋枫</a></span><span class="toggle-menu pull_right close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div></header><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">84</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">45</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">19</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><div class="sidebar-toc__content"><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#微信扫码登录是如何实现的？"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">微信扫码登录是如何实现的？</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#打开网页版微信，可以看到如下的页面："><span class="toc_mobile_items-number">1.0.1.</span> <span class="toc_mobile_items-text">打开网页版微信，可以看到如下的页面：</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#扫码登录完整流程"><span class="toc_mobile_items-number">1.0.2.</span> <span class="toc_mobile_items-text">扫码登录完整流程</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#扫码登录原理"><span class="toc_mobile_items-number">1.0.3.</span> <span class="toc_mobile_items-text">扫码登录原理</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#结语"><span class="toc_mobile_items-number">1.0.4.</span> <span class="toc_mobile_items-text">结语</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#整理参考"><span class="toc_mobile_items-number">1.0.5.</span> <span class="toc_mobile_items-text">整理参考</span></a></li></ol></li></ol></li></ol></div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#微信扫码登录是如何实现的？"><span class="toc-number">1.</span> <span class="toc-text">微信扫码登录是如何实现的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开网页版微信，可以看到如下的页面："><span class="toc-number">1.0.1.</span> <span class="toc-text">打开网页版微信，可以看到如下的页面：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫码登录完整流程"><span class="toc-number">1.0.2.</span> <span class="toc-text">扫码登录完整流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫码登录原理"><span class="toc-number">1.0.3.</span> <span class="toc-text">扫码登录原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结语"><span class="toc-number">1.0.4.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#整理参考"><span class="toc-number">1.0.5.</span> <span class="toc-text">整理参考</span></a></li></ol></li></ol></li></ol></div></div></div><main id="content-outer"><div id="top-container" style="background-image: url(https://s2.ax1x.com/2020/02/26/3NDQDP.png)"><div id="post-info"><div id="post-title"><div class="posttitle">微信扫码登录是如何实现的？</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 发表于 2018-11-09<span class="post-meta__separator">|</span><i class="fa fa-history fa-fw" aria-hidden="true"></i> 更新于 2020-02-26</time><span class="post-meta__separator">|</span><span><i class="fa fa-inbox post-meta__icon fa-fw" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%85%B6%E4%BB%96/">其他</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon fa-fw" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">1.2k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon fa-fw" aria-hidden="true"></i><span>阅读时长: 3 分钟</span><div class="post-meta-pv-cv"><span class="post-meta__separator">|</span><span><i class="fa fa-eye post-meta__icon fa-fw" aria-hidden="true"> </i>阅读量:</span><span id="busuanzi_value_page_pv"></span><span class="post-meta__separator">|</span><i class="fa fa-comments-o post-meta__icon fa-fw" aria-hidden="true"></i><span>评论数:</span><a href="/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count comment-count" data-xid="/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/" itemprop="commentCount"></span></a></div></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><html><head></head><body><h1 id="微信扫码登录是如何实现的？"><a href="#微信扫码登录是如何实现的？" class="headerlink" title="微信扫码登录是如何实现的？"></a>微信扫码登录是如何实现的？</h1><p>网页版微信刚推出时，无数人被它的登录方式惊艳了一下，不需要输入用户名密码，打开手机微信扫一扫，便自动登录。从原理上讲，二维码只能是一段文本的编码，如何用它实现快捷登录的呢？</p>
+<h3 id="打开网页版微信，可以看到如下的页面："><a href="#打开网页版微信，可以看到如下的页面：" class="headerlink" title="打开网页版微信，可以看到如下的页面："></a>打开网页版微信，可以看到如下的页面：</h3><p><a href="https://i.imgur.com/LnSAGuJ.jpg" target="_blank" rel="noopener" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.imgur.com/LnSAGuJ.jpg" class="lazyload"></a></p>
+<p>微信扫码界面</p>
+<p>如果你用我查查、支付宝、新浪微博等软件扫码二维码，你会发现此二维码解析出来是如下的网址：</p>
+<blockquote>
+</blockquote>
+<p><a href="https://login.weixin.qq.com/l/obsbQ-Dzag==" target="_blank" rel="noopener">https://login.weixin.qq.com/l/obsbQ-Dzag==</a></p>
+<p>接下来详细介绍一下扫码登录具体的每个步骤：<br><a href="https://i.imgur.com/DIyZ93O.jpg" target="_blank" rel="noopener" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.imgur.com/DIyZ93O.jpg" class="lazyload"></a></p>
+<h3 id="扫码登录完整流程"><a href="#扫码登录完整流程" class="headerlink" title="扫码登录完整流程"></a>扫码登录完整流程</h3><ul>
+<li><p>①：用户 A 访问微信网页版，微信服务器为这个会话生成一个全局唯一的 ID，上面的 URL 中 obsbQ-Dzag== 就是这个 ID，此时系统并不知道访问者是谁。</p>
+</li>
+<li><p>②：用户A打开自己的手机微信并扫描这个二维码，并提示用户是否确认登录。</p>
+</li>
+<li><p>③：手机上的微信是登录状态，用户点击确认登录后，手机上的微信客户端将微信账号和这个扫描得到的 ID 一起提交到服务器</p>
+</li>
+<li><p>④：服务器将这个 ID 和用户 A 的微信号绑定在一起，并通知网页版微信，这个 ID 对应的微信号为用户 A，网页版微信加载用户 A 的微信信息，至此，扫码登录全部流程完成</p>
+</li>
+</ul>
+<p>扫码登录看起来神奇，主要是因为微信 APP 扫自家的码会做一些普通二维码软件不会做的额外的操作，那就是将当前已登录的微信和扫出来的 ID 提交到微信服务器，类似的应用还有扫码支付、扫码加公众号等功能。</p>
+<h3 id="扫码登录原理"><a href="#扫码登录原理" class="headerlink" title="扫码登录原理"></a>扫码登录原理</h3><p>扫码登录大概的思路是：微信手机客户端从网页二维码里面得到一些信息，然后发送给网页微信的服务器，网页服务器验证信息并响应。下面，我们借助火狐浏览器提供的Firebug工具看看，到底是怎么一回事儿吧！</p>
+<p>1.每次打开微信网页版的时候，都会生成一个含有唯一uid的二维码，而且每次刷新后都会改变。这样可以保证一个uid只可以绑定一个账号和密码，确定登录用户的唯一性。可以通过手机上的UC浏览器提供的扫码功能查看二维码里面的信息，但并不会自动打开该地址。</p>
+<p>我刷新三次，扫描结果如下，其中最后面那串数字就是uid：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1） https://login.weixin.qq.com/l/48e24d66bdbc4f</span><br><span class="line">2） https://login.weixin.qq.com/l/0787fb4fa7ad4c</span><br><span class="line">3） https://login.weixin.qq.com/l/92781a4a7f1c47</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+
+<p>通过查看网页源码，这个页面在加载完毕时，已经把很多登录后才需要的相关资源都预先加载进来了，所以登录用户得到确认后展示用户信息的速度很快。</p>
+<p>2.除了返回唯一的uid，实际上打开这个页面的时候，浏览器跟服务器还创建了一个长连接，请求uid的扫描记录。如果没有，在特定时长后（目前是27秒左右）会接到状态码408（请求超时），表示应该继续下一次请求；如果接到状态码201（服务器创建新资源成功），表示客户端扫描了该二维码。</p>
+<p>请求超时：返回408<br><a href="https://i.imgur.com/qmBqD85.jpg" target="_blank" rel="noopener" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.imgur.com/qmBqD85.jpg" class="lazyload"></a></p>
+<p>扫码成功：返回201<br><a href="https://i.imgur.com/kFgYI0r.jpg" target="_blank" rel="noopener" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.imgur.com/kFgYI0r.jpg" class="lazyload"></a></p>
+<p>长轮询代码结构：<br><a href="https://i.imgur.com/igTk5dR.jpg" target="_blank" rel="noopener" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.imgur.com/igTk5dR.jpg" class="lazyload"></a></p>
+<p>3.当用户使用登录后的微信扫描二维码的时候，会将uid和手机微信产生的token进行绑定，并上传到服务器。这个时候，浏览器通过长轮询查询到uid扫描记录，立即得到201响应码，然后通知服务器，客户端由此也进入一个新的页面（就是那个要你点确认的按钮）。在客户端点击确认后，获得服务器授信的令牌，进行随后的信息交互过程。 </p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>总的来说，微信扫码登录核心过程应该是这样的：浏览器获得一个唯一的、临时的uid，通过长连接等待客户端扫描带有此uid的二维码后，从长连接中获得客户端上报给服务器的帐号信息进行展示。并在客户端点击确认后，获得服务器授信的令牌，进行随后的信息交互过程。 在超时、网络断开、其他设备上登录后，此前获得的令牌或丢失、或失效，对授权过程形成有效的安全防护。</p>
+<h3 id="整理参考"><a href="#整理参考" class="headerlink" title="整理参考"></a>整理参考</h3><ul>
+<li><p><a href="http://www.jianshu.com/p/7f072ac61763" target="_blank" rel="noopener">www.jianshu.com/p/7f072ac61763</a></p>
+</li>
+<li><p>justcoding.iteye.com/blog/2213661</p>
+</li>
+</ul>
+</body></html></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">一叶秋枫</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://hwy.ac.cn/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/">https://hwy.ac.cn/2018/11/09/%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://hwy.ac.cn">一叶秋枫</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%85%B6%E4%BB%96/">其他    </a><a class="post-meta__tags" href="/tags/%E5%BE%AE%E4%BF%A1/">微信    </a></div><div class="post_share"><div class="social-share" data-image="https://s2.ax1x.com/2020/02/26/3NDQDP.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button button--primary button--animated"> <i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.png" alt="微信"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.png" alt="支付寶"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2018/11/09/%E5%8D%81%E5%85%AB%E4%B8%AA%E8%AE%A9%E4%BD%A0%E7%BB%88%E7%94%9F%E5%8F%97%E7%94%A8%E7%9A%84%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86%E6%8A%80%E5%B7%A7%20/"><img class="prev_cover lazyload" data-src="https://s2.ax1x.com/2020/02/26/3NBbn0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>十八个让你终生受用的时间管理技巧</span></div></a></div><div class="next-post pull_right"><a href="/2018/11/05/%E5%9F%BA%E4%BA%8Espring%20boot%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"><img class="next_cover lazyload" data-src="https://s2.ax1x.com/2020/02/26/3NDlHf.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>基于spring boot的简单定时任务</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/26/博客迁移之痛/" title="博客迁移之痛"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NBqBV.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-02-26</div><div class="relatedPosts_title">博客迁移之痛</div></div></a></div><div class="relatedPosts_item"><a href="/2019/05/21/神级代码注释鉴赏/" title="神级代码注释鉴赏"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDFHK.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2019-05-21</div><div class="relatedPosts_title">神级代码注释鉴赏</div></div></a></div><div class="relatedPosts_item"><a href="/2019/02/27/Spring Cloud微服务注册中心Eureka 2.x停止维护了咋办？/" title="Spring Cloud微服务注册中心Eureka 2.x停止维护了咋办？"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NDS39.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2019-02-27</div><div class="relatedPosts_title">Spring Cloud微服务注册中心Eureka 2.x停止维护了咋办？</div></div></a></div><div class="relatedPosts_item"><a href="/2019/01/23/Dubbo重启一年，尚能饭否？/" title="Dubbo重启一年，尚能饭否？"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NdFY9.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2019-01-23</div><div class="relatedPosts_title">Dubbo重启一年，尚能饭否？</div></div></a></div><div class="relatedPosts_item"><a href="/2019/01/04/AI核心代码，估值一个亿/" title="AI核心代码，估值一个亿"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NBXAU.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2019-01-04</div><div class="relatedPosts_title">AI核心代码，估值一个亿</div></div></a></div><div class="relatedPosts_item"><a href="/2018/11/09/十八个让你终生受用的时间管理技巧 /" title="十八个让你终生受用的时间管理技巧"><img class="relatedPosts_cover lazyload"data-src="https://s2.ax1x.com/2020/02/26/3NBbn0.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2018-11-09</div><div class="relatedPosts_title">十八个让你终生受用的时间管理技巧</div></div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var notify = false == true ? true : false;
+var verify = false == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'z5BfPsXWcymDudP8Nc99LtRc-gzGzoHsz',
+  appKey:'6jqeO18XzzYHJCR0n4hYYq6z',
+  placeholder:'来都来了，不留下个脚印吗',
+  avatar:'monsterid',
+  guest_info:guest_info,
+  pageSize:'10',
+  lang:'zh-cn',
+  recordIP: true
+});</script></div></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By 一叶秋枫</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span>粤ICP备17059405号-1</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script id="ribbon" src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="https://cdn.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/js/click_heart.js"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
