@@ -19,7 +19,7 @@ after_script:
   - git config user.email "ilovey_hwy@163.com"
   - git add .
   - git commit -m "Update docs"
-  - git push --force --quiet "https://${travis-ci-token}@${GH_REF}" master:master
+  - git push --force --quiet "https://${travis}@${GH_REF}" master:master
 # E: Build LifeCycle
 
 branches:
