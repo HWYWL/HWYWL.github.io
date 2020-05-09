@@ -1,25 +1,37 @@
-if theme.valine && theme.valine.enable
-  #vcomment.vcomment
-  script(src=url_for(theme.CDN.valine))
-  script.
-    var notify = #{ theme.valine.notify } == true ? true : false;
-    var verify = #{ theme.valine.verify } == true ? true : false;
-    var GUEST_INFO = ['nick','mail','link'];
-    var guest_info = '#{ theme.valine.guest_info }'.split(',').filter(function(item){
-      return GUEST_INFO.indexOf(item) > -1
-    });
-    guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+- let emojiMaps = '""'
+if site.data.valine
+  - emojiMaps = JSON.stringify(site.data.valine)
 
-    window.valine = new Valine({
-      el:'#vcomment',
-      notify:notify,
-      verify:verify,
-      appId:'#{theme.valine.appId}',
-      appKey:'#{theme.valine.appKey}',
-      placeholder:'#{theme.valine.placeholder}',
-      avatar:'#{theme.valine.avatar}',
-      guest_info:guest_info,
-      pageSize:'#{theme.valine.pageSize}',
-      lang:'#{theme.valine.lang}',
-      recordIP: true
+#vcomment.vcomment
+script(src=url_for(theme.CDN.valine))
+script.
+  var requestSetting = function (from,set) {
+    var from = from
+    var setting = set.split(',').filter(function(item){
+    return from.indexOf(item) > -1
     });
+    setting = setting.length == 0 ? from :setting;
+    return setting
+  }
+
+  var guestInfo = requestSetting(['nick','mail','link'],'#{ theme.valine.guest_info }')
+  var requiredFields = requestSetting(['nick','mail','link'],'#{ theme.valine.requiredFields }')
+
+  window.valine = new Valine({
+    el:'#vcomment',
+    appId: '#{theme.valine.appId}',
+    appKey: '#{theme.valine.appKey}',
+    notify: #{theme.valine.notify},
+    verify: #{theme.valine.verify},
+    placeholder: '#{theme.valine.placeholder}',
+    avatar: '#{theme.valine.avatar}',
+    meta: guestInfo,
+    pageSize: '#{theme.valine.pageSize}',
+    lang: '#{theme.valine.lang}',
+    recordIP: #{theme.valine.recordIP},
+    serverURLs: '#{theme.valine.serverURLs}',
+    emojiCDN: '#{theme.valine.emojiCDN}',
+    emojiMaps: !{emojiMaps},
+    enableQQ: #{theme.valine.enableQQ},
+    requiredFields: requiredFields
+  });
