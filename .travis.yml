@@ -19,6 +19,7 @@ script:
 
 after_script:
   - cd ./public
+  - touch README.md
   - git init
   - git config user.name "HWYWL"
   - git config user.email "ilovey_hwy@163.com"
