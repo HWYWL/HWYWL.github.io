@@ -25,7 +25,7 @@ after_script:
   - git config user.email "ilovey_hwy@163.com"
   - git add .
   - git commit -m "Travis CI Auto Builder :$(date '+%Y-%m-%d %H:%M:%S' -d '+8 hour')"
-  - git push --force --quiet "https://${travis}@${GH_REF}" test:test
+  - git push --force --quiet "https://${travis}@${GH_REF}" master:master
 # E: Build LifeCycle
 
 branches:
