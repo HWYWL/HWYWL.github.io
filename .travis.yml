@@ -7,9 +7,9 @@ cache:
 
 # S: Build Lifecycle
 install:
-  - npm install
   - npm install hexo --save
   - npm install hexo-renderer-pug hexo-renderer-stylus --save
+  - npm install
 
 before_script:
   - npm install hexo-cli -g
