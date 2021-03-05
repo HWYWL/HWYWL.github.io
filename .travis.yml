@@ -6,8 +6,8 @@ node_js: stable
 #     - node_modules # 要缓存的文件夹
 
 # S: Build Lifecycle
-before_script:
-  - npm install hexo-cli -g
+# before_script:
+#   - npm install hexo-cli -g
 #   - git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/Butterfly
 
 install:
@@ -37,4 +37,4 @@ branches:
     - hexo
 env:
  global:
-   - GH_REF: github.com/HWYWL/HWYWL.github.io.git
+   - GH_REF: github.com/HWYWL/HWYWL.github.io
