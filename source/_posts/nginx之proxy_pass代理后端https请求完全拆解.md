@@ -2,7 +2,7 @@
 title: nginx之proxy_pass代理后端https请求完全拆解
 date: 2019-02-18 09:25:36
 tags: 
- - nginx
+ - 反向代理
 categories: 
  - Nginx
 keywords: "Nginx"

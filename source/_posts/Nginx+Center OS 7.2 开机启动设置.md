@@ -2,7 +2,7 @@
 title: Nginx+Center OS 7.2 开机启动设置
 date: 2019-05-16 11:18:31
 tags: 
- - nginx
+ - 反向代理
  - Linux
 categories: 
  - Nginx

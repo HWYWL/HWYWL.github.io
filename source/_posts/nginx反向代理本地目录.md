@@ -2,7 +2,7 @@
 title: Nginx反向代理本地目录
 date: 2018-08-24 10:11:36
 tags: 
- - nginx
+ - 反向代理
 categories: 
  - Nginx
 keywords: "Nginx"

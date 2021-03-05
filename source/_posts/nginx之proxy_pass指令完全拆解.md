@@ -2,7 +2,7 @@
 title: nginx之proxy_pass指令完全拆解
 date: 2019-02-18 11:18:31
 tags: 
- - nginx
+ - 反向代理
 categories: 
  - Nginx
 keywords: "Nginx"

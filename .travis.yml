@@ -6,18 +6,19 @@ cache:
     - node_modules # 要缓存的文件夹
 
 # S: Build Lifecycle
-before_script:
-  - npm install hexo-cli -g
-  - git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/Butterfly
+# before_script:
+#   - npm install hexo-cli -g
+#   - git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/Butterfly
 
 install:
   - npm install
   - npm install hexo-deployer-git --save
+  - npm install hexo-wordcount --save or yarn add hexo-wordcount
   - npm install hexo-renderer-pug hexo-renderer-stylus --save
 
 script:
   - hexo clean
-  - hexo generate
+  - hexo g
   - hexo d
 
 after_script:

@@ -2,7 +2,7 @@
 title: Nginx基础配置
 date: 2018-08-24 10:25:36
 tags: 
- - nginx
+ - 反向代理
 categories: 
  - Nginx
 keywords: "Nginx"

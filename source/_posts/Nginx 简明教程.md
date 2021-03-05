@@ -2,7 +2,7 @@
 title: Nginx 简明教程
 date: 2018-08-15 10:25:36
 tags: 
- - nginx
+ - 反向代理
 categories: 
  - Nginx
 keywords: "Nginx"
