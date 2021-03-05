@@ -28,8 +28,8 @@ after_script:
   - git config user.name "HWYWL"
   - git config user.email "ilovey_hwy@163.com"
   - git add .
-  - git commit -m "Travis CI Auto Builder :$(date '+%Y-%m-%d %H:%M:%S' -d '+8 hour')"
-  - git push --force --quiet "https://${travis}@${GH_REF}" master:master
+  - git commit -m "Travis CI 自动构建 :$(date '+%Y-%m-%d %H:%M:%S' -d '+8 hour')"
+  - git push --quiet "https://${travis}@${GH_REF}" master:master
 # E: Build LifeCycle
 
 branches:
