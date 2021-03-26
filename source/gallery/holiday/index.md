@@ -22,6 +22,6 @@ date: 2020-07-02 13:52:25
 
 ![国庆](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/image/20200922094740.png)
 
-[![清明](https://z3.ax1x.com/2021/03/26/6jzLkD.jpg)](https://imgtu.com/i/6jzLkD)
+![清明](https://z3.ax1x.com/2021/03/26/6jzLkD.jpg)
 
 {% endgallery %}
