@@ -7,7 +7,7 @@ tags:
 categories: 
  - 大数据
 keywords: "大数据,Presto"
-description:Presto查询数据量过大时的参数调节。
+description: Presto查询数据量过大时的参数调节。
 ---
 
 查询数据量过大，执行过程中途presto会报警
