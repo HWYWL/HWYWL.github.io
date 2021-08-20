@@ -13,6 +13,7 @@ type: "link"
 - :lock: [代码和段子手](http://codefun007.xyz)
 - :lock: [练涛](https://blog.liantao.me)
 - :lock: [Zhenye's blog](http://itzyi.cn)
+- :lock: [代码和段子手](http://codefun007.xyz)
 
 ## 链接须知
 
