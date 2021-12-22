@@ -28,4 +28,6 @@ date: 2020-07-02 13:52:25
 
 ![端午](https://z3.ax1x.com/2021/06/09/2yeiPH.png)
 
+![冬至](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/2021%E5%B9%B412%E6%9C%8822%E6%97%A5160057.jpg)
+
 {% endgallery %}
