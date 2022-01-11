@@ -30,4 +30,6 @@ date: 2020-07-02 13:52:25
 
 ![冬至](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/2021%E5%B9%B412%E6%9C%8822%E6%97%A5160057.jpg)
 
+![新年](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/202201110959bj.jpg)
+
 {% endgallery %}
