@@ -1,4 +1,15 @@
-# Facebook ios 事件上报测试踩坑
+---
+title: Facebook ios 事件上报测试踩坑
+date: 2022-04-02 16:28:46
+tags: 
+ - ios
+categories: 
+ - ios
+ - facebook
+keywords: "ios"
+description: Facebook ios 事件上报测试踩坑
+---
+
 
 ## 重点提要
 
