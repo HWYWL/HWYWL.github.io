@@ -32,4 +32,6 @@ date: 2020-07-02 13:52:25
 
 ![新年](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/202201110959bj.jpg)
 
+![](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/20220501.png)
+
 {% endgallery %}
