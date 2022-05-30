@@ -42,7 +42,7 @@ social:
 
 # Algolia search
 algolia_search:
-  enable: true
+  enable: false
   hits:
     per_page: 6
 
@@ -817,7 +817,7 @@ pangu:
 # Lazyload (圖片懶加載)
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: true
+  enable: false
   field: site # site/post
   placeholder:
   blur: false
