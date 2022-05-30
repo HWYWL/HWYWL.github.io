@@ -21,9 +21,9 @@
             - let data_type_update = theme.post_meta.post.date_type === 'updated'
             - let date_type = data_type_update ? 'updated' : 'date'
             - let date_icon = data_type_update ? 'fas fa-history' :'far fa-calendar-alt'
-            - let data_info = data_type_update ? _p('post.updated') : _p('post.created')
+            - let date_title = data_type_update ? _p('post.updated') : _p('post.created')
             i.fa-fw.post-meta-icon(class=date_icon)
-            span.post-meta-label= data_info
+            span.post-meta-label= date_title
             time(datetime=date_xml(page[date_type]) title=date_title + ' ' + full_date(page[date_type]))=date(page[date_type], config.date_format)
       if (theme.post_meta.post.categories && page.categories.data.length > 0)
         span.post-meta-categories
@@ -61,16 +61,28 @@
           if block
             block
 
-      if theme.busuanzi.page_pv
+      - const commentUse = comments.use
+      if commentUse && !comments.lazyload
+        case commentUse[0]
+          when 'Valine'
+            if theme.valine.visitor
+              +pvBlock(url_for(page.path),'leancloud_visitors',page.title)
+                span.leancloud-visitors-count
+          when 'Waline'
+            if theme.waline.pageview
+              +pvBlock('','','')
+                span.waline-pageview-count(data-path=url_for(page.path))
+          when 'Twikoo'
+            if theme.twikoo.visitor
+              +pvBlock('','','')
+                span#twikoo_visitors
+          default
+            if theme.busuanzi.page_pv
+              +pvBlock('','post-meta-pv-cv','')
+                span#busuanzi_value_page_pv
+      else if theme.busuanzi.page_pv
         +pvBlock('','post-meta-pv-cv','')
           span#busuanzi_value_page_pv
-      else if comments.use && !comments.lazyload
-        if (comments.use.includes('Valine') && theme.valine.visitor) || (comments.use.includes('Waline') && theme.waline.visitor)
-          +pvBlock(url_for(page.path),'leancloud_visitors',page.title)
-            span.leancloud-visitors-count
-        else if (comments.use.includes('Twikoo') && theme.twikoo.visitor)
-          +pvBlock('','','')
-            span#twikoo_visitors
 
       if comments.count && !comments.lazyload && page.comments !== false && comments.use
         - var whichCount = comments.use[0]
@@ -96,7 +108,7 @@
           when 'Waline'
             +countBlock
               a(href=url_for(page.path) + '#post-comment')
-                span.waline-comment-count(id=url_for(page.path))
+                span.waline-comment-count(data-path=url_for(page.path))
           when 'Gitalk'
             +countBlock
               a(href=url_for(page.path) + '#post-comment')
