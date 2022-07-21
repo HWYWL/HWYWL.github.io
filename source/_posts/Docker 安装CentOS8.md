@@ -4,7 +4,7 @@ date: 2020-06-03 15:31:44
 tags: 
  - Docker
 categories: 
- - OS
+ - Docker
 keywords: "CentOS,Docker"
 description: Docker 安装CentOS8。
 ---
@@ -46,6 +46,22 @@ b066e3bc5eed    centos    "/usr/sbin/init"     4 hours ago   Up 15 minutes    0.
 ```
 λ docker exec -it mycentos8 /bin/bash
 [root@b066e3bc5eed /]#
+```
+
+### 2022-07-21更新
+目前Centos8已停止维护，无法下载软件，需要换源解决：
+```
+# 备份原有的repo文件
+mv /etc/yum.repos.d /etc/yum.repos.d.bak
+
+# 创建一份新的源文件目录
+mkdir -p /etc/yum.repos.d
+
+# 替换步骤1：下载新的阿里yum源进行替换
+curl https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo > /etc/yum.repos.d/Centos-vault-8.5.2111.repo
+
+# 替换步骤2：下载新的阿里yum源进行替换，执行完即可正常下载软件
+curl https://mirrors.aliyun.com/repo/epel-archive-8.repo > /etc/yum.repos.d/epel-archive-8.repo
 ```
 
 docker提供的镜像非常基础，缺少很多常用的命令,所以我们需要安装软件：
