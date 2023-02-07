@@ -55,9 +55,6 @@ jobs:
           echo "$HEXO_DEPLOY_PRI" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-          # coding 已取消同步
-          ssh-keyscan -t rsa e.coding.net >> ~/.ssh/known_hosts
-          ssh-keyscan -t rsa gitee.com >> ~/.ssh/known_hosts
           git config --global user.name $GIT_USER
           git config --global user.email $GIT_EMAIL
 
