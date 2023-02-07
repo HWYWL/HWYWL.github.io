@@ -1,0 +1,75 @@
+# Action 的名字
+name: Hexo 自动构建
+
+on:
+  # 触发条件1：hexo 分支收到 push 后执行任务。
+  push:
+    branches:
+      - hexo
+  # 触发条件2：手动按钮
+  workflow_dispatch:
+
+# 这里放环境变量,需要替换成你自己的
+env:
+  # Hexo 编译后使用此 git 用户部署到 github 仓库
+  GIT_USER: HWYWL
+  # Hexo 编译后使用此 git 邮箱部署到 github 仓库
+  GIT_EMAIL: ilovey_hwy@163.com
+  # Hexo 编译后要部署的 github 仓库
+  GIT_DEPLOY_REPO: HWYWL/HWYWL.github.io
+  # Hexo 编译后要部署到的分支
+  GIT_DEPLOY_BRANCH: master
+  
+jobs:
+  build:
+    name: Build on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node_version: [17.9.0]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout deploy repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.GIT_DEPLOY_REPO }}
+          ref: ${{ env.GIT_DEPLOY_BRANCH }}
+          path: .deploy_git
+
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Configuration environment
+        env:
+          HEXO_DEPLOY_PRI: ${{secrets.HEXO_DEPLOY_PRI}}
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          mkdir -p ~/.ssh/
+          echo "$HEXO_DEPLOY_PRI" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+          # coding 已取消同步
+          ssh-keyscan -t rsa e.coding.net >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa gitee.com >> ~/.ssh/known_hosts
+          git config --global user.name $GIT_USER
+          git config --global user.email $GIT_EMAIL
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install hexo-deployer-git --save
+          npm install hexo-wordcount --save or yarn add hexo-wordcount
+          npm install hexo-renderer-pug hexo-renderer-stylus --save
+          hexo clean
+          hexo g
+
+      - name: Deploy hexo
+        run: |
+          npm run deploy
