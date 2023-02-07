@@ -58,15 +58,21 @@ jobs:
           git config --global user.name $GIT_USER
           git config --global user.email $GIT_EMAIL
 
-      - name: Install dependencies
+      - name: 安装 Hexo CI
+        run: |
+          export TZ='Asia/Shanghai'
+          npm i -g hexo-cli
+          npm i
+
+      - name: 安装 插件
         run: |
           npm install
           npm install hexo-deployer-git --save
           npm install hexo-wordcount --save or yarn add hexo-wordcount
           npm install hexo-renderer-pug hexo-renderer-stylus --save
+
+      - name: 部署 hexo
+        run: |
           hexo clean
           hexo g
-
-      - name: Deploy hexo
-        run: |
           npm run deploy
