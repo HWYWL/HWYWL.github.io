@@ -1,6 +1,6 @@
 ---
 title: 自定义Presto插件
-date: 2021-09-01 17:49:36
+date: 2023-02-11 09:39:03
 tags: 
  - 大数据
  - Presto
@@ -33,6 +33,9 @@ Presto版本：0.219
 对了如果抄我的代码，请确认自己的是Presto维护作者，现在网上有两个版本的Presto，互相是不兼容的。
 一个是我现在的使用的**com.facebook.presto**，还有一个是**io.prestosql**，注意注意。
 我的程序的Presto SDK版本是0.232，测试是可以兼容低版本的，例如0.219。
+
+源码地址：https://github.com/HWYWL/presto-third-udfs
+打包命令：mvn clean package -DskipTests=true
 
 ### 编写程序
 文件目录
@@ -331,7 +334,7 @@ public class AESFunctions {
 	https://aws.amazon.com/cn/premiumsupport/knowledge-center/restart-service-emr/
 ```
 
-2.如果你想集群启动时自动加载插件，启动完就可以使用，你可以如下操作，还是已AWS的EMR为例。
+2.如果你想集群启动时自动加载插件，启动完就可以使用，你可以如下操作，还是以AWS的EMR为例。
 我写了一个脚本放在S3文件系统，如下：
 ```bash
 #!/bin/bash
@@ -340,10 +343,10 @@ sudo mkdir -p /usr/lib/presto/plugin/hive-hadoop2/
 sudo cp /home/hadoop/presto-third-udfs.jar /usr/lib/presto/plugin/hive-hadoop2/
 exit 0
 ```
-在网页控制台启动，需要在引导加入此脚本
+**使用网页控制台启动，需要在引导加入此脚本**
 ![](https://hwy-figure-bed.oss-cn-hangzhou.aliyuncs.com/blog/image/1630493337411-image.png)
 
-程序启动集群(Java)
+**使用程序启动集群(Java)**
 ```
 RunJobFlowRequest request = new RunJobFlowRequest()
     //集群名
@@ -379,7 +382,7 @@ RunJobFlowRequest request = new RunJobFlowRequest()
 
 Presto加解密使用
 ```
-加密函数：select aes_encrypt('你好金科', 'J4NwAAAAAAAAAAAA');
+加密函数：select aes_encrypt('你好世界', 'J4NwAAAAAAAAAAAA');
 	输出：KbAC1EtPwRSbNmS9oaBSuA==
 
 解密函数：select aes_decrypt('KbAC1EtPwRSbNmS9oaBSuA==', 'J4NwAAAAAAAAAAAA');
@@ -394,3 +397,5 @@ Presto加解密使用
 解密函数：SELECT aes_decrypt(unbase64('KbAC1EtPwRSbNmS9oaBSuA=='), 'J4NwAAAAAAAAAAAA');
 	输出：你好世界
 ```
+
+源码地址：https://github.com/HWYWL/presto-third-udfs
